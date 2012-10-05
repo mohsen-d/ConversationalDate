@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FarhaniPersianDate, Version=1.1.0.1, Culture=neutral, PublicKeyToken=7e64b48fe84ddabf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Mohsen.d\MY JOB\dlls\Farhani.PersianDate\FarhaniPersianDate.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>D:\Mohsen.d\MY JOB\dlls\NUnit\nunit.framework.dll</HintPath>
     </Reference>

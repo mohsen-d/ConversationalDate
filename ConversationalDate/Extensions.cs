@@ -10,12 +10,18 @@ namespace ConversationalDate
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using Farhani.PersianDate;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// تبدیل تاریخ به عبارت محاوره ای معادل آن
     /// </summary>
     public static class Extensions
     {
+        #region defined ranges
+
+        /// <summary>
+        /// محدوده های زمانی و عنوان موردنظر برای آنها
+        /// </summary>
         static List<Tuple<TimeSpan[], string>> Ranges = new List<Tuple<TimeSpan[], string>>()
         {
            Tuple.Create(new[]{new TimeSpan(0,0,0,0),new TimeSpan(0,0,0,29)},"هم اکنون"),
@@ -46,30 +52,57 @@ namespace ConversationalDate
 
         };
 
-        public static string ElapsedTime(this DateTime from)
-        {
-            if (from == DateTime.Now)
-            {
-                from = from.AddSeconds(-1);
-            }
+        #endregion
 
+        #region Extension methods (1)
+
+        /// <summary>
+        /// زمان طی شده از یک تاریخ مشخص نسبت به زمان جاری را محاسبه و در قالب یک عبارت محاوره ای برمی گرداند
+        /// </summary>
+        /// <param name="from">تاریخ موردنظر به میلادی</param>
+        /// <returns></returns>
+        public static string ToConversational(this DateTime from)
+        {
+            // محاسبه تفاوت زمانی
             var differ = DateTime.Now.Subtract(from);
 
+            // حذف میلی ثانیه
             differ = new TimeSpan(differ.Days, differ.Hours, differ.Minutes, differ.Seconds);
 
+            int[] lessThanOrEqual = { -1, 0 };
+            int[] greaterThanOrEqual = { 0, 1 };
+
             var matched = (from range in Ranges
-                           where
-                           (range.Item1[0].CompareTo(differ) == -1 || range.Item1[0].CompareTo(differ) == 0) &&
-                           (range.Item1[1].CompareTo(differ) == 1 || range.Item1[1].CompareTo(differ) == 0)
+                           where lessThanOrEqual.Contains(range.Item1[0].CompareTo(differ)) // بزرگتر مساوی حد پایین محدوده زمانی باشد
+                            && greaterThanOrEqual.Contains(range.Item1[1].CompareTo(differ)) // کوچکتر مساوی حد بالایی محدوده زمانی باشد
                            select range.Item2).FirstOrDefault();
 
-            return InjectDateParts(differ, matched);
+
+            if (!string.IsNullOrEmpty(matched))
+            {
+                return InjectDateParts(differ, matched);
+            }
+            else
+            {
+                return new PerDate().GetPersianDate(from);
+            }
+
+            
 
         }
 
+        #endregion
+
+        #region Private Methods (1)
+
+        /// <summary>
+        /// مقداردهی به متغیرهای زمانی تعیین شده در متن عبارت
+        /// </summary>
+        /// <param name="differ">تفاوت زمانی با زمان جاری</param>
+        /// <param name="expression">عبارت معادل تفاوت زمانی</param>
+        /// <returns></returns>
         static string InjectDateParts(TimeSpan differ, string expression)
         {
-
             expression = expression.Replace("{H}", differ.Hours.ToString());
 
             expression = expression.Replace("{M}", differ.Minutes.ToString());
@@ -78,5 +111,7 @@ namespace ConversationalDate
 
             return expression;
         }
+
+        #endregion
     }
 }

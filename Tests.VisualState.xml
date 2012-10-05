@@ -5,8 +5,8 @@
   <ExcludeCategories>false</ExcludeCategories>
   <Nodes>
     <Node UniqueName="[0-1000]C:\Users\Developer\Documents\GitHub\ConversationalDate\Tests.nunit" Expanded="true" />
-    <Node UniqueName="[0-1026]C:\Users\Developer\Documents\GitHub\ConversationalDate\UnitTests\bin\Debug\UnitTests.dll" Expanded="true" />
-    <Node UniqueName="[0-1027]UnitTests" Expanded="true" />
+    <Node UniqueName="[0-1029]C:\Users\Developer\Documents\GitHub\ConversationalDate\UnitTests\bin\Debug\UnitTests.dll" Expanded="true" />
+    <Node UniqueName="[0-1030]UnitTests" Expanded="true" />
     <Node UniqueName="[0-1001]UnitTests.Tests" Expanded="true" />
   </Nodes>
 </VisualState>
